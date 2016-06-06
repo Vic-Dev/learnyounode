@@ -14,4 +14,19 @@ function newlines(path) {
   return (str.split(/\n/).length) - 1
 }
 
-console.log(newlines(process.argv[2]));
+var countLines;
+var path = process.argv[2];
+
+function newlines(callback) {
+  fs.readFile(path, function doneReading(err, fileContents) {
+    var str = fileContents.toString();
+    countLines = ((str.split(/\n/).length) - 1);
+    callback();
+  })
+}
+
+function returnCount() {
+  console.log(countLines);
+}
+
+newlines(returnCount);
