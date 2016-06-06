@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 function sum(arr) {
   var total = 0;
   for (var i = 2; i < arr.length; i++) {
@@ -6,4 +8,10 @@ function sum(arr) {
   return total;
 }
 
-console.log(sum(process.argv));
+function newlines(path) {
+  var buf = fs.readFileSync(path);
+  var str = buf.toString();
+  return (str.split(/\n/).length) - 1
+}
+
+console.log(newlines(process.argv[2]));
