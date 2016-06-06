@@ -1,8 +1,9 @@
 var fs = require('fs');
 var p = require('path');
+var mymodule = require('./mymodule.js');
 
 var countLines;
-var listFiles = [];
+// var listFiles = [];
 var path = process.argv[2];
 var fileExtension = process.argv[3];
 
@@ -51,10 +52,18 @@ function fileList(callback) {
   });
 }
 
-function printFiles() {
+function printFiles(response, listFiles) {
+  if (response) {
+    console.log('error!')
+  }
   for (var i = 0; i < listFiles.length; i++) {
     console.log(listFiles[i]);
   }
 }
 
-fileList(printFiles);
+// fileList(printFiles);
+
+// --- Challenge 6 ---
+
+mymodule(path, fileExtension, printFiles);
+
