@@ -1,6 +1,7 @@
 var fs = require('fs');
 var p = require('path');
 var mymodule = require('./mymodule.js');
+var http = require('http');
 
 var countLines;
 // var listFiles = [];
@@ -65,5 +66,15 @@ function printFiles(response, listFiles) {
 
 // --- Challenge 6 ---
 
-mymodule(path, fileExtension, printFiles);
+// mymodule(path, fileExtension, printFiles);
 
+// --- Challenge 7 ---
+
+http.get(path, function(response) {
+  response = response.setEncoding("utf8");
+  response.on("data", function(data) {
+    console.log(data);
+  });
+});
+
+// console.log(path);
