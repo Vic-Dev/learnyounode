@@ -80,14 +80,62 @@ function printFiles(response, listFiles) {
 
 // --- Challenge 8 ---
 
-http.get(path, function(response) {
-  response = response.setEncoding("utf8");
-  response.pipe(bl(function (err, data) {
-    if (err) {
-      console.log("Error: " + err);
-    } else {
-      console.log(data.length);
-      console.log(data.toString());
-    }
-  }))
-});
+// http.get(path, function(response) {
+//   response = response.setEncoding("utf8");
+//   response.pipe(bl(function (err, data) {
+//     if (err) {
+//       console.log("Error: " + err);
+//     } else {
+//       console.log(data.length);
+//       console.log(data.toString());
+//     }
+//   }))
+// });
+
+// Another solution:
+// http.get(path, function(response) {
+//   var allData = '';
+//   response.setEncoding("utf8");
+//   response.on("data", function(data) {
+//     allData += data;
+//   });
+//   response.on('end', function() {
+//     console.log(allData.length);
+//     console.log(allData);
+//   });
+// });
+
+// --- Challenge 9 ---
+
+var allData = [];
+var count = 0;
+
+var getData = function(index) {
+  http.get(process.argv[2 + index], function(response) {
+    allData[index] = "";
+    response.setEncoding("utf8");
+    response.on("data", function(data) {
+      allData[index] += data;
+    });
+    response.on('end', function() {
+      count++;
+      if (count === 3) { 
+        displayData();
+      }
+    });
+  });
+}
+
+var displayData = function() {
+  for (var i = 0; i < 3; i++) {
+    console.log(allData[i]);
+  }
+}
+
+for (var i = 0; i < 3; i++) {
+  // Run http for paths[i]
+  getData(i);
+}
+
+
+
