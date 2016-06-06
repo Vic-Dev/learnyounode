@@ -2,6 +2,7 @@ var fs = require('fs');
 var p = require('path');
 var mymodule = require('./mymodule.js');
 var http = require('http');
+var bl = require('bl');
 
 var countLines;
 // var listFiles = [];
@@ -70,11 +71,23 @@ function printFiles(response, listFiles) {
 
 // --- Challenge 7 ---
 
+// http.get(path, function(response) {
+//   response = response.setEncoding("utf8");
+//   response.on("data", function(data) {
+//     console.log(data);
+//   });
+// });
+
+// --- Challenge 8 ---
+
 http.get(path, function(response) {
   response = response.setEncoding("utf8");
-  response.on("data", function(data) {
-    console.log(data);
-  });
+  response.pipe(bl(function (err, data) {
+    if (err) {
+      console.log("Error: " + err);
+    } else {
+      console.log(data.length);
+      console.log(data.toString());
+    }
+  }))
 });
-
-// console.log(path);
